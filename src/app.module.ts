@@ -7,6 +7,8 @@ import { UsersModule } from '@/users/users.module';
 import { User } from '@/users/users.entity';
 import { ReportsModule } from '@/reports/reports.module';
 import mysqlConfig from 'mysql-configuration';
+import { Report } from '@/reports/reports.entity';
+import { AuthModule } from './auth/auth.module';
 
 console.log(process.env.DB_PORT);
 
@@ -25,13 +27,14 @@ console.log(process.env.DB_PORT);
         username: configService.get('database.username'),
         password: configService.get('database.password'),
         database: configService.get('database.database'),
-        entities: [User],
+        entities: [User, Report],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     UsersModule,
     ReportsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
