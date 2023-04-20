@@ -10,12 +10,33 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async create(username: string, email: string, password: string) {
+  create(username: string, email: string, password: string) {
     const user = this.usersRepository.create({ username, email, password });
     return this.usersRepository.save(user);
   }
 
-  async findOne(id: number) {
+  findOne(id: number) {
     return this.usersRepository.findOneBy({ id });
+  }
+
+  findByEmail(email: string) {
+    return this.usersRepository.findOne({ where: { email } });
+  }
+
+  async updateUser(id: number, data: Partial<User>) {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    Object.assign(user, data);
+    return this.usersRepository.save(user);
+  }
+
+  async deleteUser(id: number) {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return this.usersRepository.remove(user);
   }
 }
