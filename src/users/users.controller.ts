@@ -1,11 +1,13 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   NotFoundException,
   Param,
   Patch,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from '@/users/users.service';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
@@ -19,6 +21,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   async findUser(@Param('id') id: string) {
     const user = await this.usersService.findOne(parseInt(id));
