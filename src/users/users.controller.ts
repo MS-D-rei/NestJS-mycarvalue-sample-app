@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Session,
 } from '@nestjs/common';
 import { UsersService } from '@/users/users.service';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
@@ -17,6 +18,12 @@ import { UserDto } from '@/users/dto/user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Get('currentUser')
+  currentUser(@Session() session: any) {
+    console.log(session);
+    return this.usersService.findOne(session.userId);
+  }
 
   @Get()
   findAllUsers() {
