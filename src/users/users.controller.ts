@@ -11,8 +11,9 @@ import {
 import { UsersService } from '@/users/users.service';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { Serialize } from '@/interceptor/serialize.interceptor';
-import { UserDto } from './dto/user.dto';
+import { UserDto } from '@/users/dto/user.dto';
 
+@Serialize(UserDto)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -22,7 +23,6 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Serialize(UserDto)
   @Get(':id')
   async findUser(@Param('id', ParseIntPipe) id: string) {
     const user = await this.usersService.findOne(parseInt(id));
@@ -31,11 +31,6 @@ export class UsersController {
     }
     return user;
   }
-
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.create(createUserDto);
-  // }
 
   @Patch(':id')
   updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
