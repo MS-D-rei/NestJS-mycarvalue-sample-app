@@ -42,3 +42,6 @@ lerna-debug.log*
 
 # db files
 /db/*
+
+# playground file
+playground.js
