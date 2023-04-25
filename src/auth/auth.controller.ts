@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Session } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Session,
+} from '@nestjs/common';
 import { AuthService } from '@/auth/auth.service';
 import { SignupDto } from '@/auth/dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
@@ -22,6 +29,7 @@ export class AuthController {
     return user;
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Session() session: any) {
     console.log(loginDto);
@@ -33,6 +41,7 @@ export class AuthController {
     return user;
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post('logout')
   logout(@Session() session: any) {
     session.userId = null;
