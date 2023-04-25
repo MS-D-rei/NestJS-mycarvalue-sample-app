@@ -7,22 +7,32 @@ import {
   Param,
   ParseIntPipe,
   Patch,
-  Session,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from '@/users/users.service';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { Serialize } from '@/interceptor/serialize.interceptor';
 import { UserDto } from '@/users/dto/user.dto';
+import { currentUser } from '@/users/decorator/current-user.decorator';
+import { User } from '@/users/users.entity';
+import { CurrentUserInterceptor } from './interceptor/current-user.interceptor';
 
 @Serialize(UserDto)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // @Get('currentUser')
+  // currentUser(@Session() session: any) {
+  //   console.log(session);
+  //   return this.usersService.findOne(session.userId);
+  // }
+
+  @UseInterceptors(CurrentUserInterceptor)
   @Get('currentUser')
-  currentUser(@Session() session: any) {
-    console.log(session);
-    return this.usersService.findOne(session.userId);
+  currentUser(@currentUser() user: User) {
+    console.log(user);
+    return user;
   }
 
   @Get()
