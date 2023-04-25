@@ -37,6 +37,12 @@ console.log(process.env.DB_PORT);
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: CurrentUserInterceptor,
+    // },
+  ],
 })
 export class AppModule {}
