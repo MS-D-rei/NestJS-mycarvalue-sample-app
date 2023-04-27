@@ -42,7 +42,7 @@ export class AuthService {
     const [salt, storedHash] = user.password.split('.');
     const hash = (await scryptAsync(password, salt, 32)) as Buffer;
     if (storedHash !== hash.toString('hex')) {
-      throw new BadRequestException('password is not valid');
+      throw new BadRequestException('Incorrect password');
     }
     return user;
   }
