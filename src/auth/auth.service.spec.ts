@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { randomBytes, scrypt } from 'crypto';
+import { promisify } from 'util';
 import { AuthService } from '@/auth/auth.service';
 import { UsersService } from '@/users/users.service';
 import { User } from '@/users/users.entity';
-import { randomBytes, scrypt } from 'crypto';
-import { promisify } from 'util';
 
 const scryptAsync = promisify(scrypt);
 
@@ -23,13 +23,13 @@ const registeredUserFactory = async (
   } as Partial<User>;
 };
 
-const registeredUserHashedPromise = registeredUserFactory(
+const registeredUserPromise = registeredUserFactory(
   'testUser1',
   'test1@email.com',
   'testPassword1',
 );
 
-const registeredUser: Partial<User> = {
+const registeredUserInput: Partial<User> = {
   id: 1,
   username: 'testUser1',
   email: 'test1@email.com',
@@ -54,11 +54,12 @@ const mockUsersService: Partial<UsersService> = {
   findByEmail: jest
     .fn()
     .mockImplementationOnce(() => Promise.resolve(null))
-    .mockImplementationOnce(() => Promise.resolve(registeredUser))
-    .mockImplementationOnce(() => Promise.resolve(registeredUserHashedPromise))
+    .mockImplementationOnce(() => Promise.resolve(registeredUserPromise))
+    .mockImplementationOnce(() => Promise.resolve(registeredUserPromise))
     .mockImplementationOnce(() => Promise.resolve(null))
-    .mockImplementation(() => Promise.resolve(registeredUserHashedPromise)),
+    .mockImplementation(() => Promise.resolve(registeredUserPromise)),
 };
+
 describe('AuthService', () => {
   let authService: AuthService;
 
@@ -96,9 +97,9 @@ describe('AuthService', () => {
     it('signup should throw an error if email is in use', async () => {
       await expect(
         authService.signup(
-          registeredUser.username,
-          registeredUser.email,
-          registeredUser.password,
+          registeredUserInput.username,
+          registeredUserInput.email,
+          registeredUserInput.password,
         ),
       ).rejects.toThrowError('Email in use');
     });
@@ -106,12 +107,12 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('login should return a user', async () => {
-      const registeredUserHashed = await registeredUserHashedPromise;
+      const registeredUser = await registeredUserPromise;
       const user = await authService.login(
-        registeredUser.email,
-        registeredUser.password,
+        registeredUserInput.email,
+        registeredUserInput.password,
       );
-      expect(user).toEqual(registeredUserHashed);
+      expect(user).toEqual(registeredUser);
     });
 
     it('login should throw an error if user not found', async () => {
@@ -123,8 +124,8 @@ describe('AuthService', () => {
     it('login should throw an error if password is incorrect', async () => {
       await expect(
         authService.login(
-          registeredUser.email,
-          registeredUser.password + 'wrong',
+          registeredUserInput.email,
+          registeredUserInput.password + 'wrong',
         ),
       ).rejects.toThrowError('Incorrect password');
     });
