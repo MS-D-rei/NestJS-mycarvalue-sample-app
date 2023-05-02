@@ -37,8 +37,10 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    Object.assign(user, data);
-    return this.usersRepository.save(user);
+    // this assign method mutates the user object. We don't want that.
+    // Object.assign(user, data);
+    const updatedUser = { ...user, ...data };
+    return this.usersRepository.save(updatedUser);
   }
 
   async remove(id: number) {
