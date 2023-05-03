@@ -68,6 +68,13 @@ describe('UsersController', () => {
       expect(result).toEqual(user);
       expect(usersService.findOne).toHaveBeenCalledWith(user.id);
     });
+
+    it('should throw NotFoundException when user is not found', async () => {
+      jest.spyOn(usersService, 'findOne').mockResolvedValue(null);
+      await expect(usersController.findOne('0')).rejects.toThrowError(
+        'User not found',
+      );
+    });
   });
 
   describe('update', () => {
