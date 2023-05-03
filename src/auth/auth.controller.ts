@@ -19,7 +19,7 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() signupDto: SignupDto, @Session() session: any) {
-    console.log(signupDto);
+    // console.log(signupDto);
     const user = await this.authService.signup(
       signupDto.username,
       signupDto.email,
@@ -32,7 +32,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Session() session: any) {
-    console.log(loginDto);
+    // console.log(loginDto);
     const user = await this.authService.login(
       loginDto.email,
       loginDto.password,
