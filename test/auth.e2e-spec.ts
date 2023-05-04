@@ -10,8 +10,7 @@ import { User } from '@/users/users.entity';
 import { AppModule } from '@/app.module';
 
 describe('AuthController (e2e)', () => {
-  const newUser: Partial<User> = {
-    id: 3,
+  const newUserInput: Partial<User> = {
     username: 'newUser1',
     email: 'newUser1@email.com',
     password: 'newUser1Password',
@@ -56,34 +55,61 @@ describe('AuthController (e2e)', () => {
     }
   });
 
-  // afterEach(async () => {
-  //   // after each, clear all tables
-  //   const dataSource = app.get(DataSource);
-  //   const entities = dataSource.entityMetadatas;
-  //   for (const entity of entities) {
-  //     const repository = dataSource.getRepository(entity.name);
-  //     await repository.createQueryBuilder().delete().execute();
-  //   }
-  // });
+  afterEach(async () => {
+    // after each, clear all tables
+    const dataSource = app.get(DataSource);
+    const entities = dataSource.entityMetadatas;
+    for (const entity of entities) {
+      const repository = dataSource.getRepository(entity.name);
+      await repository.createQueryBuilder().delete().execute();
+    }
+  });
 
   afterAll(async () => {
     await app.close();
   });
 
-  it('/auth/signup (POST)', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/auth/signup')
-      .send(newUser)
-      .expect(201);
+  describe('POST: /auth/signup', () => {
+    it('with valid input, return 201 Created and res.body has {id, username, email} info', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/auth/signup')
+        .send(newUserInput)
+        .expect(201);
 
-    // console.log(`response body: ${JSON.stringify(response.body)}`);
+      // console.log(`response body: ${JSON.stringify(response.body)}`);
 
-    expect(response.body).toEqual(
-      expect.objectContaining<Partial<User>>({
-        id: expect.any(Number),
-        username: newUser.username,
-        email: newUser.email,
-      }),
-    );
+      expect(response.body).toEqual(
+        expect.objectContaining<Partial<User>>({
+          id: expect.any(Number),
+          username: newUserInput.username,
+          email: newUserInput.email,
+        }),
+      );
+    });
+  });
+
+  describe('POST: /auth/login', () => {
+    it('with valid input, return 200 OK and res.body has {id, username, email} info ', async () => {
+      await request(app.getHttpServer())
+        .post('/auth/signup')
+        .send(newUserInput)
+        .expect(201);
+
+      const response = await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email: newUserInput.email, password: newUserInput.password })
+        .expect(200);
+
+      // console.log(`response body: ${JSON.stringify(response.body)}`);
+      // response body: {"id":14,"username":"newUser1","email":"newUser1@email.com"}
+
+      expect(response.body).toEqual(
+        expect.objectContaining<Partial<User>>({
+          id: expect.any(Number),
+          username: newUserInput.username,
+          email: newUserInput.email,
+        }),
+      );
+    });
   });
 });
