@@ -4,11 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import { UsersModule } from '@/users/users.module';
-import { User } from '@/users/users.entity';
 import { ReportsModule } from '@/reports/reports.module';
-import mysqlConfig from 'mysql-configuration';
-import { Report } from '@/reports/reports.entity';
+import mysqlConfig from '@/../config/typeorm-mysql-config';
 import { AuthModule } from './auth/auth.module';
+import { DataSource } from 'typeorm';
 
 console.log(process.env.DB_PORT);
 
@@ -20,17 +19,13 @@ console.log(process.env.DB_PORT);
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('database.host'),
-        port: configService.get('database.port'),
-        username: configService.get('database.username'),
-        password: configService.get('database.password'),
-        database: configService.get('database.database'),
-        entities: [User, Report],
-        synchronize: true,
-      }),
       inject: [ConfigService],
+      useFactory: async (configService: ConfigService) =>
+        configService.get('database'),
+      dataSourceFactory: async (options: any) => {
+        // console.log(`dataSourceFactory options: ${JSON.stringify(options)}`);
+        return new DataSource(options).initialize();
+      },
     }),
     UsersModule,
     ReportsModule,
