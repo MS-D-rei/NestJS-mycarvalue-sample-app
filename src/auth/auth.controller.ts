@@ -26,6 +26,7 @@ export class AuthController {
       signupDto.password,
     );
     session.userId = user.id;
+    // console.log(user);
     return user;
   }
 

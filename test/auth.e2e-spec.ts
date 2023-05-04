@@ -10,21 +10,6 @@ import { User } from '@/users/users.entity';
 import { AppModule } from '@/app.module';
 
 describe('AuthController (e2e)', () => {
-  // const registeredUsers: Partial<User>[] = [
-  //   {
-  //     id: 1,
-  //     username: 'test1',
-  //     email: 'test1@email.com',
-  //     password: 'test1Password',
-  //   },
-  //   {
-  //     id: 2,
-  //     username: 'test2',
-  //     email: 'test2@email.com',
-  //     password: 'test2Password',
-  //   },
-  // ];
-
   const newUser: Partial<User> = {
     id: 3,
     username: 'newUser1',
