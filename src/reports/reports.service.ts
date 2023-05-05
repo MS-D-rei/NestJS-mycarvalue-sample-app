@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Report } from '@/reports/reports.entity';
+import { CreateReportDto } from '@/reports/dto/create-report.dto';
 
 @Injectable()
 export class ReportsService {
@@ -10,23 +11,36 @@ export class ReportsService {
     private reportsRepository: Repository<Report>,
   ) {}
 
-  create() {
-    return 'This action creates a new report';
+  create(createReportDto: CreateReportDto) {
+    const report = this.reportsRepository.create(createReportDto);
+    return this.reportsRepository.save(report);
   }
 
   findAll() {
-    return 'This action returns all reports';
+    return this.reportsRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} report`;
+    if (!id) {
+      return null;
+    }
+    return this.reportsRepository.findOneBy({ id });
   }
 
-  update(id: number) {
-    return `This action updates a #${id} report`;
+  async pdate(id: number, data: Partial<Report>) {
+    const report = await this.reportsRepository.findOneBy({ id });
+    if (!report) {
+      throw new NotFoundException('Report not found');
+    }
+    const updatedReport = { ...report, ...data };
+    return this.reportsRepository.save(updatedReport);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} report`;
+  async remove(id: number) {
+    const report = await this.reportsRepository.findOneBy({ id });
+    if (!report) {
+      throw new NotFoundException('Report not found');
+    }
+    return this.reportsRepository.remove(report);
   }
 }
