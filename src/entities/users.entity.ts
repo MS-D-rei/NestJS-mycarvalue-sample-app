@@ -1,4 +1,4 @@
-import { Report } from '@/entities/reports.entity';
+import { Report } from '@/entities';
 import {
   AfterInsert,
   AfterRemove,

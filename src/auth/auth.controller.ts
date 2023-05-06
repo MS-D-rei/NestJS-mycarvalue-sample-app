@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '@/auth/auth.service';
 import { SignupDto } from '@/auth/dto/signup.dto';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto } from '@/auth/dto/login.dto';
 import { Serialize } from '@/interceptor/serialize.interceptor';
 import { UserDto } from '@/users/dto/user.dto';
 
@@ -39,6 +39,7 @@ export class AuthController {
       loginDto.password,
     );
     session.userId = user.id;
+    console.log(user);
     return user;
   }
 

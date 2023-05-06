@@ -1,12 +1,14 @@
-import { User } from '@/entities/users.entity';
+import { User } from '@/entities';
 import {
   Column,
   CreateDateColumn,
+  Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+@Entity()
 export class Report {
   @PrimaryGeneratedColumn()
   id: number;

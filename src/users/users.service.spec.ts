@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '@/users/users.service';
-import { User } from '@/entities/users.entity';
+import { User } from '@/entities';
 
 const allUsers = [
   {

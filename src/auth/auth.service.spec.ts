@@ -3,7 +3,7 @@ import { randomBytes, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { AuthService } from '@/auth/auth.service';
 import { UsersService } from '@/users/users.service';
-import { User } from '@/entities/users.entity';
+import { User } from '@/entities';
 
 const scryptAsync = promisify(scrypt);
 
