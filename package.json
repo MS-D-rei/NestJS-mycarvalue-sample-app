@@ -20,9 +20,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "dotenv -e ./.env.test -- jest --config ./test/jest-e2e.ts",
     "test:e2e:watch": "dotenv -e ./.env.test -- jest --config ./test/jest-e2e.ts --watch --maxWorkers=1",
-    "migrate:create:dev": "dotenv -e ./.env -- typeorm migration:create ./database/migrations/development",
+    "migrate:create:dev": "dotenv -e ./.env.development -- typeorm migration:create ./database/migrations/development",
     "migrate:create:test": "dotenv -e ./.env.test -- typeorm migration:create ./database/migrations/test",
-    "migrate:generate:dev": "dotenv -e ./.env -- typeorm-ts-node-commonjs migration:generate -d ./config/typeorm-mysql-migration-config-dev.ts ./database/migrations/development"
+    "migrate:generate:dev": "dotenv -e ./.env.development -- typeorm-ts-node-commonjs migration:generate -d ./config/typeorm-mysql-migration-config-dev.ts ./database/migrations/development"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

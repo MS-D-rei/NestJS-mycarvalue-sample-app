@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '@/users/users.controller';
 import { UsersService } from '@/users/users.service';
-import { User } from './users.entity';
+import { User } from '../entities/users.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 const registeredUsers: Partial<User>[] = [

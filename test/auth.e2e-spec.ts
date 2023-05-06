@@ -6,7 +6,7 @@ import { DataSource } from 'typeorm';
 import cookieSession from 'cookie-session';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import mysqlConfig from '@/../config/typeorm-mysql-config';
-import { User } from '@/users/users.entity';
+import { User } from '@/entities/users.entity';
 import { AppModule } from '@/app.module';
 
 describe('AuthController (e2e)', () => {

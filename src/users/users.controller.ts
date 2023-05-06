@@ -15,7 +15,7 @@ import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { Serialize } from '@/interceptor/serialize.interceptor';
 import { UserDto } from '@/users/dto/user.dto';
 import { currentUser } from '@/users/decorator/current-user.decorator';
-import { User } from '@/users/users.entity';
+import { User } from '@/entities/users.entity';
 import { CurrentUserInterceptor } from '@/users/interceptor/current-user.interceptor';
 import { AuthGuard } from '@/auth/guard/auth.guard';
 
