@@ -1,7 +1,8 @@
 import { DataSource } from 'typeorm';
 import { Report, User } from '@/entities';
+import { MigrationDev1683365063141 } from '@/../database/MySQL/migrations/development';
 
-console.log('process.env.DB_USER', process.env.DB_USER);
+// console.log(__dirname + '/database/MySQL/migrations/development/');
 
 const MysqlDataSource = new DataSource({
   type: 'mysql',
@@ -12,8 +13,9 @@ const MysqlDataSource = new DataSource({
   database: process.env.DB_MYSQL_DATABASE,
   entities: [User, Report],
   synchronize: false,
-  migrations: [__dirname + 'database/MySQL/migrations/development/*{.ts,.js}'],
-  migrationsTableName: 'migrations_typeorm_dev',
+  // migrations: [__dirname + '/database/MySQL/migrations/development/*.ts'],
+  migrations: [MigrationDev1683365063141],
+  migrationsTableName: 'migrations_mysql_dev',
 });
 
 export default MysqlDataSource;

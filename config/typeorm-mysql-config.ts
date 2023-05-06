@@ -14,10 +14,6 @@ export default registerAs('database', (): MysqlConnectionOptions => {
         database: process.env.DB_MYSQL_DATABASE,
         entities: [User, Report],
         synchronize: false,
-        migrations: [
-          __dirname + 'database/MySQL/migrations/development/*{.ts,.js}',
-        ],
-        migrationsTableName: 'migrations_typeorm_dev',
       };
     case 'test':
       return {
@@ -29,8 +25,6 @@ export default registerAs('database', (): MysqlConnectionOptions => {
         database: process.env.DB_MYSQL_DATABASE,
         entities: [User, Report],
         synchronize: false,
-        migrations: [__dirname + 'database/MySQL/migrations/test/*{.ts,.js}'],
-        migrationsTableName: 'migrations_typeorm_test',
       };
   }
 });
