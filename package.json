@@ -20,9 +20,17 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "dotenv -e ./.env.test -- jest --config ./test/jest-e2e.ts",
     "test:e2e:watch": "dotenv -e ./.env.test -- jest --config ./test/jest-e2e.ts --watch --maxWorkers=1",
-    "migrate:create:dev": "dotenv -e ./.env.development -- typeorm migration:create ./database/migrations/development",
-    "migrate:create:test": "dotenv -e ./.env.test -- typeorm migration:create ./database/migrations/test",
-    "migrate:generate:dev": "dotenv -e ./.env.development -- typeorm-ts-node-commonjs migration:generate -d ./config/typeorm-mysql-migration-config-dev.ts ./database/migrations/development"
+    "schema:log:dev": "dotenv -e ./.env.development -- typeorm schema:log -d ./config/typeorm-mysql-migration-config-dev.ts",
+    "migrate:create:dev": "dotenv -e ./.env.development -- typeorm migration:create ./database/MySQL/migrations/development/",
+    "migrate:create:test": "dotenv -e ./.env.test -- typeorm migration:create ./database/MySQL/migrations/test/",
+    "migrate:generate:dev": "dotenv -e ./.env.development -- typeorm-ts-node-commonjs migration:generate -d ./config/typeorm-mysql-migration-config-dev.ts ./database/MySQL/migrations/development/migration_dev",
+    "migrate:generate:test": "dotenv -e ./.env.test -- typeorm-ts-node-commonjs migration:generate -d ./config/typeorm-mysql-migration-config-test.ts ./database/MySQL/migrations/test/migration_test",
+    "migrate:run:dev": "dotenv -e ./.env.development -- typeorm-ts-node-commonjs migration:run -d ./config/typeorm-mysql-migration-config-dev.ts",
+    "migrate:run:test": "dotenv -e ./.env.test -- typeorm-ts-node-commonjs migration:run -d ./config/typeorm-mysql-migration-config-test.ts",
+    "migrate:revert:dev": "dotenv -e ./.env.development -- typeorm-ts-node-commonjs migration:revert -d ./config/typeorm-mysql-migration-config-dev.ts",
+    "migrate:revert:test": "dotenv -e ./.env.test -- typeorm-ts-node-commonjs migration:revert -d ./config/typeorm-mysql-migration-config-test.ts",
+    "migrate:show:dev": "dotenv -e ./.env.development -- typeorm-ts-node-commonjs migration:show -d ./config/typeorm-mysql-migration-config-dev.ts",
+    "migrate:show:test": "dotenv -e ./.env.test -- typeorm-ts-node-commonjs migration:show -d ./config/typeorm-mysql-migration-config-test.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
