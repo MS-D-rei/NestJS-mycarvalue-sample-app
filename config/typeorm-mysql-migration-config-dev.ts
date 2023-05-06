@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { Report } from '@/reports/reports.entity';
+import { Report } from '@/entities/reports.entity';
 import { User } from '@/entities/users.entity';
 
 console.log('process.env.DB_USER', process.env.DB_USER);

@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
-import { Report } from '@/reports/reports.entity';
+import { Report } from '@/entities/reports.entity';
 import { User } from '@/entities/users.entity';
 
 export default registerAs('database', (): MysqlConnectionOptions => {
