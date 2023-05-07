@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { Report, User } from '@/entities';
-import { MigrationTest1683367319178 } from 'database/MySQL/migrations/test';
+// import { MigrationTest1683367319178 } from 'database/MySQL/migrations/test';
 
 const MysqlDataSource = new DataSource({
   type: 'mysql',
@@ -12,7 +12,8 @@ const MysqlDataSource = new DataSource({
   entities: [User, Report],
   synchronize: false,
   // migrations: [__dirname + '/database/MySQL/migrations/test/*.ts'],
-  migrations: [MigrationTest1683367319178],
+  // migrations: [MigrationTest1683367319178],
+  migrations: ['database/MySQL/migrations/test/*.ts'],
   migrationsTableName: 'migrations_mysql_test',
 });
 
