@@ -1,4 +1,4 @@
-import { User } from '@/entities';
+import { User } from "@/entities";
 import {
   Column,
   CreateDateColumn,
@@ -6,12 +6,15 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from "typeorm";
 
 @Entity()
 export class Report {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ default: false })
+  approved: boolean;
 
   @Column()
   title: string;
