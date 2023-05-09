@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Report } from '@/entities';
+import { Report, User } from '@/entities';
 import { CreateReportDto } from '@/reports/dto/create-report.dto';
 
 @Injectable()
@@ -9,10 +9,11 @@ export class ReportsService {
   constructor(
     @InjectRepository(Report)
     private reportsRepository: Repository<Report>,
-  ) {}
+  ) { }
 
-  create(createReportDto: CreateReportDto) {
+  create(createReportDto: CreateReportDto, user: User) {
     const report = this.reportsRepository.create(createReportDto);
+    report.user = user;
     return this.reportsRepository.save(report);
   }
 
@@ -27,7 +28,7 @@ export class ReportsService {
     return this.reportsRepository.findOneBy({ id });
   }
 
-  async pdate(id: number, data: Partial<Report>) {
+  async update(id: number, data: Partial<Report>) {
     const report = await this.reportsRepository.findOneBy({ id });
     if (!report) {
       throw new NotFoundException('Report not found');
@@ -42,5 +43,14 @@ export class ReportsService {
       throw new NotFoundException('Report not found');
     }
     return this.reportsRepository.remove(report);
+  }
+
+  async changeApprovedStatus(id: number, approved: boolean) {
+    const report = await this.reportsRepository.findOneBy({ id });
+    if (!report) {
+      throw new NotFoundException('Report not found');
+    }
+    report.approved = approved;
+    return this.reportsRepository.save(report);
   }
 }
