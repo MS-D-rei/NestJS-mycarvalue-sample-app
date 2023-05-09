@@ -1,12 +1,13 @@
-import { User } from "@/entities";
+import { User } from '@/entities';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
+} from 'typeorm';
 
 @Entity()
 export class Report {
@@ -41,7 +42,11 @@ export class Report {
   mileage: number;
 
   @ManyToOne(() => User, (user) => user.reports)
+  @JoinColumn()
   user: User;
+
+  @Column({ nullable: true })
+  userId: number;
 
   @CreateDateColumn()
   createdAt: Date;
