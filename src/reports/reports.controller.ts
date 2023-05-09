@@ -1,4 +1,4 @@
-import { AuthGuard } from '@/auth/guard/auth.guard';
+import { AuthGuard } from '@/guard/auth.guard';
 import { CurrentUserInterceptor } from '@/users/interceptor/current-user.interceptor';
 import {
   Body,
