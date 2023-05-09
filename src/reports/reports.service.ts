@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Report, User } from '@/entities';
 import { CreateReportDto } from '@/reports/dto/create-report.dto';
+import { ApproveReportDto } from './dto/approve-report.dto';
 
 @Injectable()
 export class ReportsService {
@@ -17,21 +18,29 @@ export class ReportsService {
     return this.reportsRepository.save(report);
   }
 
-  findAll() {
-    return this.reportsRepository.find();
+  async findAll() {
+    const reports = await this.reportsRepository.find();
+    if (!reports) {
+      throw new NotFoundException('Reports not found');
+    }
+    return reports;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     if (!id) {
       return null;
     }
-    return this.reportsRepository.findOneBy({ id });
+    const report = await this.reportsRepository.findOneBy({ id });
+    if (!report) {
+      throw new NotFoundException('Report not found');
+    }
+    return report;
   }
 
   async update(id: number, data: Partial<Report>) {
     const report = await this.reportsRepository.findOneBy({ id });
     if (!report) {
-      throw new NotFoundException('Report not found');
+      throw new NotFoundException(`Report with id ${id} not found`);
     }
     const updatedReport = { ...report, ...data };
     return this.reportsRepository.save(updatedReport);
@@ -40,17 +49,17 @@ export class ReportsService {
   async remove(id: number) {
     const report = await this.reportsRepository.findOneBy({ id });
     if (!report) {
-      throw new NotFoundException('Report not found');
+      throw new NotFoundException(`Report with id ${id} not found`);
     }
     return this.reportsRepository.remove(report);
   }
 
-  async changeApprovedStatus(id: number, approved: boolean) {
+  async changeApprovedStatus(id: number, approveReportDto: ApproveReportDto) {
     const report = await this.reportsRepository.findOneBy({ id });
     if (!report) {
       throw new NotFoundException('Report not found');
     }
-    report.approved = approved;
+    report.approved = approveReportDto.approved;
     return this.reportsRepository.save(report);
   }
 }
