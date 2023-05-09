@@ -39,7 +39,7 @@ export class AuthController {
       loginDto.password,
     );
     session.userId = user.id;
-    console.log(user);
+    // console.log(user);
     return user;
   }
 
