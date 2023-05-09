@@ -10,12 +10,15 @@ export class ReportsService {
   constructor(
     @InjectRepository(Report)
     private reportsRepository: Repository<Report>,
-  ) { }
+  ) {}
 
-  create(createReportDto: CreateReportDto, user: User) {
+  async create(createReportDto: CreateReportDto, user: User) {
     const report = this.reportsRepository.create(createReportDto);
     report.user = user;
-    return this.reportsRepository.save(report);
+    console.log(report);
+    const savedReport = await this.reportsRepository.save(report);
+    console.log(savedReport);
+    return savedReport;
   }
 
   async findAll() {
@@ -34,6 +37,7 @@ export class ReportsService {
     if (!report) {
       throw new NotFoundException('Report not found');
     }
+    console.log(report);
     return report;
   }
 
