@@ -12,6 +12,7 @@ export class CreateReportDto {
   title: string;
 
   @IsNumber()
+  @Min(0)
   price: number;
 
   @IsString()
