@@ -1,5 +1,4 @@
 import { AuthGuard } from '@/guard/auth.guard';
-import { CurrentUserInterceptor } from '@/users/interceptor/current-user.interceptor';
 import {
   Body,
   Controller,
@@ -9,16 +8,18 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ReportsService } from '@/reports/reports.service';
 import { Serialize } from '@/interceptor/serialize.interceptor';
 import { User } from '@/entities';
 import { currentUser } from '@/users/decorator/current-user.decorator';
-import { CreateReportDto } from './dto/create-report.dto';
-import { ReportDto } from '@/reports/dto/report.dto';
-import { ApproveReportDto } from './dto/approve-report.dto';
+import { ApproveReportDto, CreateReportDto, ReportDto, GetEstimateDto } from '@/reports/dto';
 import { AdminGuard } from '@/guard/admin.guard';
+
+// Module level
+// CurrentUserMiddleware
 
 @Serialize(ReportDto)
 @Controller('reports')
@@ -39,6 +40,14 @@ export class ReportsController {
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.reportService.findOne(id);
+  }
+
+  @Get(':id/estimate')
+  getEstimate(
+    @Param('id', ParseIntPipe) id: number,
+    @Query() getEstimateDto: GetEstimateDto,
+  ) {
+    console.log(getEstimateDto);
   }
 
   @Patch(':id')
