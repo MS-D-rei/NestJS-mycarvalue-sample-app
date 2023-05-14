@@ -2,16 +2,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Report, User } from '@/entities';
-import { CreateReportDto } from '@/reports/dto/create-report.dto';
-import { ApproveReportDto } from './dto/approve-report.dto';
-import { GetEstimateDto } from './dto';
+import {
+  ApproveReportDto,
+  CreateReportDto,
+  GetEstimateDto,
+} from '@/reports/dto';
 
 @Injectable()
 export class ReportsService {
   constructor(
     @InjectRepository(Report)
     private reportsRepository: Repository<Report>,
-  ) {}
+  ) { }
 
   async create(createReportDto: CreateReportDto, user: User) {
     const report = this.reportsRepository.create(createReportDto);
@@ -23,9 +25,10 @@ export class ReportsService {
   }
 
   async createEstimate(getEstimateDto: GetEstimateDto) {
-    const estimate = await this.reportsRepository.createQueryBuilder()
-    .select("*")
-    .getRawMany();
+    const estimate = await this.reportsRepository
+      .createQueryBuilder()
+      .select('*')
+      .getRawMany();
     return estimate;
   }
 

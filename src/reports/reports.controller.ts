@@ -15,7 +15,12 @@ import { ReportsService } from '@/reports/reports.service';
 import { Serialize } from '@/interceptor/serialize.interceptor';
 import { User } from '@/entities';
 import { currentUser } from '@/users/decorator/current-user.decorator';
-import { ApproveReportDto, CreateReportDto, ReportDto, GetEstimateDto } from '@/reports/dto';
+import {
+  ApproveReportDto,
+  CreateReportDto,
+  ReportDto,
+  GetEstimateDto,
+} from '@/reports/dto';
 import { AdminGuard } from '@/guard/admin.guard';
 
 // Module level
@@ -38,9 +43,7 @@ export class ReportsController {
   }
 
   @Get('estimate')
-  getEstimate(
-    @Query() getEstimateDto: GetEstimateDto,
-  ) {
+  getEstimate(@Query() getEstimateDto: GetEstimateDto) {
     return this.reportService.createEstimate(getEstimateDto);
   }
 
