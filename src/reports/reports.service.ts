@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Report, User } from '@/entities';
 import { CreateReportDto } from '@/reports/dto/create-report.dto';
 import { ApproveReportDto } from './dto/approve-report.dto';
+import { GetEstimateDto } from './dto';
 
 @Injectable()
 export class ReportsService {
@@ -19,6 +20,13 @@ export class ReportsService {
     const savedReport = await this.reportsRepository.save(report);
     console.log(savedReport);
     return savedReport;
+  }
+
+  async createEstimate(getEstimateDto: GetEstimateDto) {
+    const estimate = await this.reportsRepository.createQueryBuilder()
+    .select("*")
+    .getRawMany();
+    return estimate;
   }
 
   async findAll() {

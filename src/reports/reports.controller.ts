@@ -37,17 +37,16 @@ export class ReportsController {
     return this.reportService.findAll();
   }
 
+  @Get('estimate')
+  getEstimate(
+    @Query() getEstimateDto: GetEstimateDto,
+  ) {
+    return this.reportService.createEstimate(getEstimateDto);
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.reportService.findOne(id);
-  }
-
-  @Get(':id/estimate')
-  getEstimate(
-    @Param('id', ParseIntPipe) id: number,
-    @Query() getEstimateDto: GetEstimateDto,
-  ) {
-    console.log(getEstimateDto);
   }
 
   @Patch(':id')
