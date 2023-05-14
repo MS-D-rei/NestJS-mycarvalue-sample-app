@@ -1,19 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
-import { ValidationPipe } from '@nestjs/common';
-import cookieSession from 'cookie-session';
+import { setupGlobal } from '@/utils/setupGlobal';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(
-    cookieSession({
-      name: 'session',
-      keys: ['key1'],
-    }),
-  );
-  app.useGlobalPipes(
-    new ValidationPipe({ whitelist: true, enableDebugMessages: true }),
-  );
+  // move to module
+  // app.use(
+  //   cookieSession({
+  //     name: 'session',
+  //     keys: ['key1'],
+  //   }),
+  // );
+  setupGlobal(app);
   await app.listen(3000);
 }
 bootstrap();
