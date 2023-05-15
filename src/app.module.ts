@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 import cookieSession from 'cookie-session';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
@@ -8,7 +9,6 @@ import { UsersModule } from '@/users/users.module';
 import { ReportsModule } from '@/reports/reports.module';
 import mysqlConfig from '@/../config/typeorm-mysql-config';
 import { AuthModule } from '@/auth/auth.module';
-import { DataSource } from 'typeorm';
 
 console.log(process.env.DB_PORT);
 
@@ -17,6 +17,7 @@ console.log(process.env.DB_PORT);
     ConfigModule.forRoot({
       load: [mysqlConfig],
       isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -42,12 +43,16 @@ console.log(process.env.DB_PORT);
   ],
 })
 export class AppModule {
+  constructor(private configService: ConfigService) { }
+
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(
-      cookieSession({
-        name: 'session',
-        keys: ['key1'],
-      }),
-    );
+    consumer
+      .apply(
+        cookieSession({
+          name: 'session',
+          keys: [this.configService.get('COOKIE_KEY')],
+        }),
+      )
+      .forRoutes('*');
   }
 }
